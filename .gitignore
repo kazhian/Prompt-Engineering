@@ -4,3 +4,5 @@
 
 # OpenAI config file
 openai-config.json
+
+.DS_Store
