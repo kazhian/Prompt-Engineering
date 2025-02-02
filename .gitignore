@@ -1,0 +1,8 @@
+# VS Code files
+.vscode/
+!.vscode/settings.json
+
+# OpenAI config file
+openai-config.json
+
+.DS_Store
