@@ -1,0 +1,181 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyP0ToKqxMwqKAbCi/VnH46z",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/kazhian/Prompt-Engineering/blob/main/notebooks/dspy-prompting.jpynb\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "# DSPY"
+      ],
+      "metadata": {
+        "id": "R4wYOtk2Vdc6"
+      }
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 7,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "IWD6-cQSVbX_",
+        "outputId": "24408046-1718-4497-9813-3c2a57b76530"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "  Preparing metadata (setup.py) ... \u001b[?25l\u001b[?25hdone\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m6.7/6.7 MB\u001b[0m \u001b[31m27.7 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m76.4/76.4 kB\u001b[0m \u001b[31m5.6 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m83.6/83.6 kB\u001b[0m \u001b[31m5.8 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[?25h  Building wheel for session-info (setup.py) ... \u001b[?25l\u001b[?25hdone\n"
+          ]
+        }
+      ],
+      "source": [
+        "!pip install dspy openai==1.55.3 tiktoken datasets session-info --quiet"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import dspy, json\n",
+        "from IPython import display\n",
+        "from openai import AzureOpenAI"
+      ],
+      "metadata": {
+        "id": "2o6Q4FPPVkYk"
+      },
+      "execution_count": 8,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "with open('config.json', 'r') as az_creds:\n",
+        "    data = az_creds.read()\n",
+        "creds = json.loads(data)\n",
+        "\n",
+        "client = AzureOpenAI(\n",
+        "    azure_endpoint=creds[\"AZURE_OPENAI_ENDPOINT\"],\n",
+        "    api_key=creds[\"AZURE_OPENAI_KEY\"],\n",
+        "    api_version=creds[\"AZURE_OPENAI_APIVERSION\"]\n",
+        ")\n",
+        "\n",
+        "deployment_name = creds[\"CHATGPT_MODEL\"]"
+      ],
+      "metadata": {
+        "id": "kSVAh8hdVt8V"
+      },
+      "execution_count": 9,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "turbo = dspy.OpenAI(model=deployment_name)\n",
+        "dspy.settings.configure(lm=turbo)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 159
+        },
+        "id": "RQq9hZAuYYQY",
+        "outputId": "7a3c2052-fb19-42ea-813f-e03764b665ef"
+      },
+      "execution_count": 15,
+      "outputs": [
+        {
+          "output_type": "error",
+          "ename": "AttributeError",
+          "evalue": "module 'dspy' has no attribute 'OpenAI'",
+          "traceback": [
+            "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+            "\u001b[0;31mAttributeError\u001b[0m                            Traceback (most recent call last)",
+            "\u001b[0;32m<ipython-input-15-702f911f7da9>\u001b[0m in \u001b[0;36m<cell line: 0>\u001b[0;34m()\u001b[0m\n\u001b[0;32m----> 1\u001b[0;31m \u001b[0mturbo\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mdspy\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mOpenAI\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mmodel\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mdeployment_name\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m      2\u001b[0m \u001b[0mdspy\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0msettings\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mconfigure\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mlm\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mturbo\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+            "\u001b[0;31mAttributeError\u001b[0m: module 'dspy' has no attribute 'OpenAI'"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "predict = dspy.Predict(\"question -> answer\")"
+      ],
+      "metadata": {
+        "id": "0YbsGOL_Yi7s"
+      },
+      "execution_count": 12,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "prediction = predict(question=\"What is the capital of France?\")\n",
+        "prediction.answer"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 304
+        },
+        "id": "yh-wkpVQYzW1",
+        "outputId": "74611e53-dee8-4fdf-dcc7-0fdc64f18d9e"
+      },
+      "execution_count": 13,
+      "outputs": [
+        {
+          "output_type": "error",
+          "ename": "AssertionError",
+          "evalue": "No LM is loaded.",
+          "traceback": [
+            "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+            "\u001b[0;31mAssertionError\u001b[0m                            Traceback (most recent call last)",
+            "\u001b[0;32m<ipython-input-13-f90164a0e5db>\u001b[0m in \u001b[0;36m<cell line: 0>\u001b[0;34m()\u001b[0m\n\u001b[0;32m----> 1\u001b[0;31m \u001b[0mprediction\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mpredict\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mquestion\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;34m\"What is the capital of France?\"\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m      2\u001b[0m \u001b[0mprediction\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0manswer\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+            "\u001b[0;32m/usr/local/lib/python3.11/dist-packages/dspy/utils/callback.py\u001b[0m in \u001b[0;36mwrapper\u001b[0;34m(instance, *args, **kwargs)\u001b[0m\n\u001b[1;32m    264\u001b[0m         \u001b[0;31m# If no callbacks are provided, just call the function\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    265\u001b[0m         \u001b[0;32mif\u001b[0m \u001b[0;32mnot\u001b[0m \u001b[0mcallbacks\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 266\u001b[0;31m             \u001b[0;32mreturn\u001b[0m \u001b[0mfn\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0minstance\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m*\u001b[0m\u001b[0margs\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    267\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    268\u001b[0m         \u001b[0;31m# Generate call ID as the unique identifier for the call, this is useful for instrumentation.\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+            "\u001b[0;32m/usr/local/lib/python3.11/dist-packages/dspy/predict/predict.py\u001b[0m in \u001b[0;36m__call__\u001b[0;34m(self, **kwargs)\u001b[0m\n\u001b[1;32m     71\u001b[0m     \u001b[0;34m@\u001b[0m\u001b[0mwith_callbacks\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     72\u001b[0m     \u001b[0;32mdef\u001b[0m \u001b[0m__call__\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m---> 73\u001b[0;31m         \u001b[0;32mreturn\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mforward\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m     74\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     75\u001b[0m     \u001b[0;32mdef\u001b[0m \u001b[0mforward\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+            "\u001b[0;32m/usr/local/lib/python3.11/dist-packages/dspy/predict/predict.py\u001b[0m in \u001b[0;36mforward\u001b[0;34m(self, **kwargs)\u001b[0m\n\u001b[1;32m     82\u001b[0m         \u001b[0;31m# Get the right LM to use.\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     83\u001b[0m         \u001b[0mlm\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mkwargs\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mpop\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m\"lm\"\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mlm\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;32mor\u001b[0m \u001b[0msettings\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mlm\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m---> 84\u001b[0;31m         \u001b[0;32massert\u001b[0m \u001b[0misinstance\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mlm\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mBaseLM\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m\"No LM is loaded.\"\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m     85\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     86\u001b[0m         \u001b[0;31m# If temperature is 0.0 but its n > 1, set temperature to 0.7.\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+            "\u001b[0;31mAssertionError\u001b[0m: No LM is loaded."
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [],
+      "metadata": {
+        "id": "DCDiP-xqZEex"
+      },
+      "execution_count": null,
+      "outputs": []
+    }
+  ]
+}
