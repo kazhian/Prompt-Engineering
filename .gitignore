@@ -5,4 +5,10 @@
 # OpenAI config file
 openai-config.json
 
+# Environment variables
+.env
+
 .DS_Store
+
+# idea files
+.idea
