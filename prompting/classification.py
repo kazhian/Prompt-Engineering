@@ -14,9 +14,9 @@ env_path = Path(__file__).resolve().parent.parent / '.env'
 load_dotenv(dotenv_path=env_path)
 llm_name = 'gpt-4-turbo'
 
-def api_key():
+def get_api_key():
     temp = os.getenv("OPENAI_API_KEY")
-    if not api_key:
+    if not temp:
         raise ValueError("OpenAI API key not provided and OPENAI_API_KEY environment variable not set")
     return temp
 
@@ -86,7 +86,7 @@ def main():
             continue
             
         try:
-            result = analyze_sentiment(message, api_key())
+            result = analyze_sentiment(message, get_api_key())
             
             if "error" in result:
                 print(f"Error: {result['error']}")
